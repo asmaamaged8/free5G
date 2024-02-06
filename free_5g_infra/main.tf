@@ -17,3 +17,17 @@ module "vpc" {
   private3_subnet_cidr_block = var.private3_subnet_cidr_block
 }
 
+# create nat gateways
+module "nat-gateway" {
+  source              = "../modules/nat-gateway"
+  public_subnet_1_id  = module.vpc.public_subnet_1_id
+  public_subnet_2_id  = module.vpc.public_subnet_2_id
+  public_subnet_3_id  = module.vpc.public_subnet_3_id
+  private_subnet_1_id = module.vpc.private_subnet_1_id
+  private_subnet_2_id = module.vpc.private_subnet_2_id
+  private_subnet_3_id = module.vpc.private_subnet_3_id
+  internet_gateway     = module.vpc.internet_gateway
+  vpc_id              = module.vpc.vpc_id
+ 
+  
+}
