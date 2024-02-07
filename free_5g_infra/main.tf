@@ -38,3 +38,11 @@ module "alb_security_group" {
   source = "../modules/security-groups"
   vpc_id = module.vpc.vpc_id
 }           
+
+# create iam roles and eks 
+module "eks" {
+  source = "../modules/eks"
+  private_subnet_1_id = module.vpc.private_subnet_1_id
+  private_subnet_2_id = module.vpc.private_subnet_2_id
+  private_subnet_3_id = module.vpc.private_subnet_3_id    
+}
