@@ -31,3 +31,10 @@ module "nat-gateway" {
  
   
 }
+
+
+#create security groups
+module "alb_security_group" {
+  source = "../modules/security-groups"
+  vpc_id = module.vpc.vpc_id
+}           
