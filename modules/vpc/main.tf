@@ -1,8 +1,7 @@
 resource "aws_vpc" "asmaavpc" {
   cidr_block = var.vpc_cidr
 
-  enable_dns_support   = true
-  enable_dns_hostnames = true
+  enable_dns_support = "true"
 
 
   tags = {
@@ -20,61 +19,87 @@ resource "aws_internet_gateway" "igw" {
 }
 
 #subnets
-###############################
-
-resource "aws_subnet" "public" {
+resource "aws_subnet" "public1" {
   vpc_id     = aws_vpc.asmaavpc.id
-  count = length(var.public_subnet_cidr_blocks)
-  cidr_block     = var.public_subnet_cidr_blocks[count.index]
+  cidr_block = var.public1_subnet_cidr_block
   map_public_ip_on_launch = true
-  availability_zone = data.aws_availability_zones.available.names[count.index]
-  
+  availability_zone = "${var.region}_a"
   
   tags = {
-    Name = "${var.project_name}-public-subnet${count.index + 1}"
+    Name = "${var.project_name}-public-subnet1"
   }
 }
 
-
-resource "aws_subnet" "private" {
+resource "aws_subnet" "public2" {
   vpc_id     = aws_vpc.asmaavpc.id
-  count = length(var.private_subnet_cidr_blocks)
-  cidr_block     = var.private_subnet_cidr_blocks[count.index]
-  map_public_ip_on_launch = false
-  availability_zone = data.aws_availability_zones.available.names[count.index]
-
-  
-  tags = {
-    Name = "${var.project_name}-private-subnet${count.index + 1}"
+  cidr_block = var.public2_subnet_cidr_block
+  map_public_ip_on_launch = true
+  availability_zone = "${var.region}_b"
+    tags = {
+    Name = "${var.project_name}-public-subnet2"
   }
 }
-################################
+
+resource "aws_subnet" "public3" {
+  vpc_id     = aws_vpc.asmaavpc.id
+  cidr_block = var.public3_subnet_cidr_block
+  map_public_ip_on_launch = true
+  availability_zone = "${var.region}_c"
+   tags = {
+    Name = "${var.project_name}-public-subnet3"
+  }
+}
+
+resource "aws_subnet" "private1" {
+  vpc_id     = aws_vpc.asmaavpc.id
+  cidr_block = var.private1_subnet_cidr_block
+  availability_zone = "${var.region}_a"
+     tags = {
+    Name = "${var.project_name}-private-subnet1"
+  }
+}
+
+resource "aws_subnet" "private2" {
+  vpc_id     = aws_vpc.asmaavpc.id
+  cidr_block = var.private2_subnet_cidr_block
+  availability_zone = "${var.region}_b"
+    tags = {
+    Name = "${var.project_name}-private-subnet2"
+  }
+}
+
+resource "aws_subnet" "private3" {
+  vpc_id     = aws_vpc.asmaavpc.id
+  cidr_block = var.private3_subnet_cidr_block
+  availability_zone = "${var.region}_c"
+  tags = {
+    Name = "${var.project_name}-private-subnet3"
+  }
+}
+#
 
 
 #routetables
 
-#Route Table Association
-
-
-resource "aws_route_table" "public_route_table" {
-  count          = length(var.public_subnet_cidr_blocks)
+resource "aws_route_table" "public" {
   vpc_id = aws_vpc.asmaavpc.id
-  route {
-    cidr_block     = "0.0.0.0/0"
-    gateway_id = aws_internet_gateway.igw.id
-  }
-
-  tags = {
-    Name = "PUBLIC_route-${count.index + 1}"
-  }
-}
-
-  resource "aws_route_table_association" "public" {
-  count          = length(var.public_subnet_cidr_blocks)
-  subnet_id      = aws_subnet.public[count.index].id
-  route_table_id = aws_route_table.public_route_table[count.index].id
 
 }
-
-
+resource "aws_route" "public_route" {
+  route_table_id = aws_route_table.public.id
+  destination_cidr_block = "0.0.0.0/0"
+  gateway_id = aws_internet_gateway.igw.id
+}
+resource "aws_route_table_association" "public1" {
+  subnet_id      = aws_subnet.public1.id
+  route_table_id = aws_route_table.public.id
+}
+resource "aws_route_table_association" "public2" {
+  subnet_id      = aws_subnet.public2.id
+  route_table_id = aws_route_table.public.id
+}
+resource "aws_route_table_association" "public3" {
+  subnet_id      = aws_subnet.public3.id
+  route_table_id = aws_route_table.public.id
+}
 

@@ -9,20 +9,27 @@ module "vpc" {
   region                     = var.region
   vpc_cidr                   = var.vpc_cidr
   project_name               = var.project_name
-
-  ################
-  public_subnet_cidr_blocks = var.public_subnet_cidr_blocks
-  private_subnet_cidr_blocks = var.private_subnet_cidr_blocks
-  ##############
+  public1_subnet_cidr_block  = var.public1_subnet_cidr_block
+  public2_subnet_cidr_block  = var.public2_subnet_cidr_block
+  public3_subnet_cidr_block  = var.public3_subnet_cidr_block
+  private1_subnet_cidr_block = var.private1_subnet_cidr_block
+  private2_subnet_cidr_block = var.private2_subnet_cidr_block
+  private3_subnet_cidr_block = var.private3_subnet_cidr_block
 }
 
 # create nat gateways
 module "nat-gateway" {
   source              = "../modules/nat-gateway"
-  
-  internet_gateway    = module.vpc.internet_gateway
+  public_subnet_1_id  = module.vpc.public_subnet_1_id
+  public_subnet_2_id  = module.vpc.public_subnet_2_id
+  public_subnet_3_id  = module.vpc.public_subnet_3_id
+  private_subnet_1_id = module.vpc.private_subnet_1_id
+  private_subnet_2_id = module.vpc.private_subnet_2_id
+  private_subnet_3_id = module.vpc.private_subnet_3_id
+  internet_gateway     = module.vpc.internet_gateway
   vpc_id              = module.vpc.vpc_id
-  private_subnet_ids  = module.vpc.private_subnet_ids
+ 
+  
 }
 
 
@@ -47,11 +54,7 @@ module "eks" {
   private_subnet_1_id = module.vpc.private_subnet_1_id
   private_subnet_2_id = module.vpc.private_subnet_2_id
   private_subnet_3_id = module.vpc.private_subnet_3_id    
-  #oidc_issuer_url = var.oidc_issuer_url
-
-  #################################
-  private_subnet_ids = module.vpc.private_subnet_ids
-  #################################
+  oidc_issuer_url = var.oidc_issuer_url
 } 
 
 #create an alb
@@ -64,6 +67,4 @@ module "application_load_balancer" {
   private_subnet_3_id = module.vpc.private_subnet_3_id
   vpc_id = module.vpc.vpc_id
   tls_certificate_arn = module.eks.tls_certificate_arn
-  ##############
-  private_subnet_ids = module.vpc.private_subnet_ids
 }

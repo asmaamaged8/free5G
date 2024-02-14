@@ -31,7 +31,7 @@ resource "aws_security_group" "alb_security_group" {
     cidr_blocks = ["0.0.0.0/0"]  # Allow traffic to any IPv4 address
   }
   tags = {
-    Name ="alb_security_group"
+    Name ="{alb_security_group"
   }
 }
 
