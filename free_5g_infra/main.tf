@@ -42,7 +42,29 @@ module "alb_security_group" {
 # create iam roles and eks 
 module "eks" {
   source = "../modules/eks"
+  cluster_name  = var.cluster_name
+  eks_security_group_id= module.alb_security_group.eks_security_group_id
+  node_group_name = var.node_group_name
+  capacity_type  = var.capacity_type
+  instance_types = var.instance_types
+  desired_size   = var.desired_size
+  max_size       = var.max_size
+  min_size       = var.min_size
+  max_unavailable = var.max_unavailable
   private_subnet_1_id = module.vpc.private_subnet_1_id
   private_subnet_2_id = module.vpc.private_subnet_2_id
   private_subnet_3_id = module.vpc.private_subnet_3_id    
+  oidc_issuer_url = var.oidc_issuer_url
+} 
+
+#create an alb
+module "application_load_balancer" {
+  source = "../modules/alb"
+  project_name = module.vpc.project_name
+  alb_security_group_id = module.alb_security_group.alb_security_group_id
+  private_subnet_1_id = module.vpc.private_subnet_1_id
+  private_subnet_2_id = module.vpc.private_subnet_2_id
+  private_subnet_3_id = module.vpc.private_subnet_3_id
+  vpc_id = module.vpc.vpc_id
+  tls_certificate_arn = module.eks.tls_certificate_arn
 }

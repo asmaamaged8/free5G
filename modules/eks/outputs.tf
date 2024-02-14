@@ -1,15 +1,13 @@
+output "tls_certificate_arn" {
+  description = "The ARN of the TLS certificate."
+  value       = data.tls_certificate.eks.certificates[0].arn
+}
 
 
 
-
-
-
-
-
-
-
-
-
+output "eks_id" {
+  value = aws_iam_role.asmaa_eks_cluster.id
+}
 
 
 
