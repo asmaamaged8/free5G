@@ -1,9 +1,11 @@
 variable "region" {}
 variable "vpc_cidr" {}
 variable "project_name" {}
-variable "public1_subnet_cidr_block" {}
-variable "public2_subnet_cidr_block" {}
-variable "public3_subnet_cidr_block" {}
-variable "private1_subnet_cidr_block" {}
-variable "private2_subnet_cidr_block" {}
-variable "private3_subnet_cidr_block" {}
+
+variable "public_subnet_cidr_blocks" {
+    type = list(string)
+}
+
+variable "private_subnet_cidr_blocks" {
+    type = list(string)
+}

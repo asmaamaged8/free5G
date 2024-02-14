@@ -41,7 +41,7 @@ resource "aws_eks_cluster" "asmaa_eks_cluster" {
   vpc_config {
     #subnet_ids = [aws_subnet.private1.id, aws_subnet.private2.id, aws_subnet.private3.id]
     security_group_ids = [var.eks_security_group_id]
-    subnet_ids = [var.private_subnet_1_id, var.private_subnet_2_id, var.private_subnet_3_id]
+    subnet_ids = [var.private_subnet_ids]
     #endpoint_private_access = false 
     #endpoint_public_access = false 
   }
@@ -100,9 +100,9 @@ resource "aws_iam_role_policy_attachment" "ecr_read_only_policy" {
 #create nodes
 resource "aws_eks_node_group" "private_nodes" {
   cluster_name    = aws_eks_cluster.asmaa_eks_cluster.name    
-  node_group_name = var.node_group_name
+  node_group_name = "private_node_${count.index}"
   node_role_arn   = aws_iam_role.eks_node_group_role.arn
-  subnet_ids = [var.private_subnet_1_id, var.private_subnet_2_id, var.private_subnet_3_id]
+  subnet_ids = [var.private_subnet_ids]
   capacity_type = var.capacity_type
 
   instance_types = var.instance_types

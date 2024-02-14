@@ -7,3 +7,7 @@ variable "vpc_id" {}
 variable "tls_certificate_arn" {
   
 }
+####################################
+variable "private_subnet_ids" {
+  
+}

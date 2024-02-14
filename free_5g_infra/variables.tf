@@ -7,6 +7,19 @@ variable "public3_subnet_cidr_block" {}
 variable "private1_subnet_cidr_block" {}
 variable "private2_subnet_cidr_block" {}
 variable "private3_subnet_cidr_block" {}
+############
+variable "public_subnet_cidr_blocks" {
+    type = list(string)
+}
+
+variable "private_subnet_cidr_blocks" {
+    type = list(string)
+
+}
+variable "private_subnet_ids" {
+  type = list(string)
+}
+############
 #eks variabls 
 variable "cluster_name" {}
 variable "node_group_name"{}
@@ -16,4 +29,4 @@ variable "desired_size"{}
 variable "max_size"{}
 variable "min_size"{}
 variable "max_unavailable"{}
-variable "oidc_issuer_url" {} 
+#variable "oidc_issuer_url" {} 
