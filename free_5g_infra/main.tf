@@ -54,7 +54,7 @@ module "eks" {
   private_subnet_1_id = module.vpc.private_subnet_1_id
   private_subnet_2_id = module.vpc.private_subnet_2_id
   private_subnet_3_id = module.vpc.private_subnet_3_id    
-  oidc_issuer_url = var.oidc_issuer_url
+  #oidc_issuer_url = var.oidc_issuer_url
 } 
 
 #create an alb
@@ -66,5 +66,6 @@ module "application_load_balancer" {
   private_subnet_2_id = module.vpc.private_subnet_2_id
   private_subnet_3_id = module.vpc.private_subnet_3_id
   vpc_id = module.vpc.vpc_id
-  tls_certificate_arn = module.eks.tls_certificate_arn
+  
+  #tls_certificate_arn = module.eks.tls_certificate_arn
 }

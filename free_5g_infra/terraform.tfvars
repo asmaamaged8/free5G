@@ -15,5 +15,5 @@ max_size = 5
 min_size = 1
 max_unavailable = 0
 node_group_name = "asmaa-5g-node-group"
-oidc_issuer_url = 
+#oidc_issuer_url = 
 

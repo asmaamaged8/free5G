@@ -3,7 +3,7 @@ provider "aws" {
 }
 
 resource "aws_lb" "asmaa_lb" {
-  name               = "${project_name}-alp"
+  name               = "${var.project_name}-alp"
   internal           = true
   load_balancer_type = "application"
   security_groups    = [var.alb_security_group_id]
@@ -65,8 +65,8 @@ resource "aws_lb_listener" "alb_https_listener" {
   load_balancer_arn = aws_lb.asmaa_lb.arn
   port              = "443"
   protocol          = "HTTPs"
-   ssl_policy        = "ELBSecurityPolicy-2016-08"
-  certificate_arn   = var.tls_certificate_arn
+  # ssl_policy        = "ELBSecurityPolicy-2016-08"
+  # #certificate_arn   = var.tls_certificate_arn
   default_action {
     type = "forward"
     target_group_arn = aws_lb_target_group.my_target_group.arn

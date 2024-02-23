@@ -16,4 +16,7 @@ variable "desired_size"{}
 variable "max_size"{}
 variable "min_size"{}
 variable "max_unavailable"{}
-variable "oidc_issuer_url" {} 
+
+  
+
+#variable "oidc_issuer_url" {} 
